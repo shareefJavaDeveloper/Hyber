@@ -2,13 +2,13 @@ package com.hyber.vendor.service;
 
 import java.util.List;
 
-import com.hyber.vendor.repository.dataentity.Vendor;
+import com.hyber.vendor.repository.dataentity.VendorReg;
 
 public interface VendorRegistrationService {
 	
-	public void addVendor(Vendor vendor);
+	public void addVendor(VendorReg vendor);
 	
-	public List<Vendor> getAllVendorsDetails();
+	public List<VendorReg> getAllVendorsDetails();
 	
 
 }

@@ -16,17 +16,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table (name = VendorConstants.VENDOR)
+@Table (name = VendorConstants.VENDOR_REG)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Vendor implements Serializable{
+public class VendorReg implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int VendorId;
+	private Integer VendorRegId;
+	private String password;
 	private String firstName;
     private String lastName;
     private String Gender;

@@ -7,9 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Vendor {
+public class VendorReg {
 	
-	private int VendorId;
+	private int VendorRegId;
+	private String password;
 	private String firstName;
     private String lastName;
     private String gender;
