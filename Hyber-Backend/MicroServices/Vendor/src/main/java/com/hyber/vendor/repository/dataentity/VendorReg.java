@@ -1,5 +1,7 @@
 package com.hyber.vendor.repository.dataentity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,15 +16,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table (name = VendorConstants.VENDOR)
+@Table (name = VendorConstants.VENDOR_REG)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Vendor {
+public class VendorReg implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int VendorId;
+	private Integer VendorRegId;
+	private String password;
 	private String firstName;
     private String lastName;
     private String Gender;
