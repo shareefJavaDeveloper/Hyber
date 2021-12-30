@@ -9,9 +9,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import com.hyber.vendor.repository.VendorOldRegRepo;
-import com.hyber.vendor.repository.dataentity.VendorOldReg;
+import com.hyber.vendor.repository.VendorHIstRegRepo;
+import com.hyber.vendor.repository.dataentity.VendorHistReg;
 import com.hyber.vendor.service.VendorEmailService;
+import com.hyber.vendor.util.VendorConstants;
 
 @Service
 public class VendorEmailServiceImpl implements VendorEmailService{
@@ -20,7 +21,7 @@ public class VendorEmailServiceImpl implements VendorEmailService{
 	 private JavaMailSender emailSender;
 	 
 	 @Autowired
-	 private VendorOldRegRepo vendorOldRegRepo;
+	 private VendorHIstRegRepo vendorHistRegRepo;
 	 	
 	 @Override
 	    public void sendEmail(String to,
@@ -30,8 +31,7 @@ public class VendorEmailServiceImpl implements VendorEmailService{
 		 	MimeMessage message = emailSender.createMimeMessage();
 	     
 		    MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		    
-		    helper.setFrom(new InternetAddress("NoReply@Hyber.com"));
+
 		    helper.setTo(to);
 		    helper.setSubject(subject);
 		    helper.setText(text, true);
@@ -40,10 +40,10 @@ public class VendorEmailServiceImpl implements VendorEmailService{
 	    }
 
 	@Override
-	public String textOfThemail(VendorOldReg vendorReg) throws Exception {
+	public String textOfTheSuccessfulmail(VendorHistReg vendorHistReg) throws Exception {
 		String emailBody = "<html>" +
 							"<h1>" +
-							"Welcome " + vendorReg.getFirstName() + " ...!" +
+							"Welcome " + vendorHistReg.getFirstName() + " ...!" +
 							"</h1>" +
 							"</br>" +
 							"<h3>" +
@@ -52,19 +52,47 @@ public class VendorEmailServiceImpl implements VendorEmailService{
 							"</html>";
 		return emailBody;
 	}
+	
+
+	@Override
+	public String textOfTheFailuremail(VendorHistReg vendorHistReg) throws Exception {
+		String emailBody = "<html>" +
+							"<h2>" +
+							"Hi " + vendorHistReg.getFirstName() + ", " +
+							"</h2>" +
+							"</br>" +
+							"<p>" +
+							"Your Registration is Failed...please check the submitted details" +
+							"</p>" +
+							"</html>";
+return emailBody;
+	}
+
 
 	@Override
 	public void prepareAndCallSendEmail(String vendorRegId) {
-		VendorOldReg vendorReg = vendorOldRegRepo.getById(Integer.parseInt(vendorRegId));
 		
-		String subject = "Vendor Registration Successfull-Hyber";
+		VendorHistReg vendorHistReg = vendorHistRegRepo.findByVendorRegId(Integer.parseInt(vendorRegId));
 		
-		try {
-			/*-Hard coading gmail...will be taken from vendorlist after adding to entity-*/
-			sendEmail("shareef0508@gmail.com", subject, textOfThemail(vendorReg));
-		} catch (Exception e) {
-			throw new RuntimeException("Error at sendEmail : "+ e.getLocalizedMessage());
+		if (vendorHistReg.getVendorStatus().equalsIgnoreCase(VendorConstants.ACCEPTED)) {
+			String subject = "Vendor Registration Successful-Hyber";
+			
+			try {
+				sendEmail(vendorHistReg.getEmailId(), subject, textOfTheSuccessfulmail(vendorHistReg));
+			} catch (Exception e) {
+				throw new RuntimeException("Error at AcceptedSendEmail : "+ e.getLocalizedMessage());
+			}
 		}
+		else if (vendorHistReg.getVendorStatus().equalsIgnoreCase(VendorConstants.REJECTED)){
+			String subject = "Vendor Registration Rejected-Hyber";
+			
+			try {
+				sendEmail(vendorHistReg.getEmailId(), subject, textOfTheFailuremail(vendorHistReg));
+			} catch (Exception e) {
+				throw new RuntimeException("Error at RejectedSendEmail : "+ e.getLocalizedMessage());
+			}
+		}
+		
 	}
 
 }

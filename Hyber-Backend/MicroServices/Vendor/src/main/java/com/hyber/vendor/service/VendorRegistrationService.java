@@ -10,5 +10,9 @@ public interface VendorRegistrationService {
 	
 	public List<VendorReg> getAllVendorsDetails();
 	
+	public void UpdateStatusToAccepted(int vendorRegId);
+	
+	public void UpdateStatusToRejected(int vendorRegId);
+	
 
 }
