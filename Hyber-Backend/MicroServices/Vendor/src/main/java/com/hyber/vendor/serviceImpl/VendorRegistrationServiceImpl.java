@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.hyber.vendor.repository.VendorOldRegRepo;
+import com.hyber.vendor.repository.VendorHIstRegRepo;
 import com.hyber.vendor.repository.VendorRepo;
 import com.hyber.vendor.repository.dataentity.VendorReg;
 import com.hyber.vendor.service.VendorRegistrationService;
@@ -19,16 +19,17 @@ public class VendorRegistrationServiceImpl implements VendorRegistrationService{
 	private VendorRepo vendorRepo;
 	
 	@Autowired
-	private VendorOldRegRepo vendorOldRegRepo;
+	private VendorHIstRegRepo vendorHistRegRepo;
 	
 	
 	@Override
 	public void addVendor(VendorReg vendor) {
-		if (vendorRepo.existsById(vendor.getVendorRegId()) || vendorOldRegRepo.existsById(vendor.getVendorRegId())) {
+		if (vendorRepo.existsByVendorRegId(vendor.getVendorRegId()) || vendorHistRegRepo.existsByVendorRegId(vendor.getVendorRegId())) {
 			throw new RuntimeException("Error at addVendor() : VendorRegId Already Exists");
 		}
 		else {
-			vendorRepo.save(vendor);
+			System.out.println("++++++++++");
+			vendorRepo.saveAndFlush(vendor);
 		}
 	}
 
@@ -37,6 +38,19 @@ public class VendorRegistrationServiceImpl implements VendorRegistrationService{
 	public List<VendorReg> getAllVendorsDetails() {
 		List<VendorReg> allVendorsList = vendorRepo.findAll();
 		return allVendorsList;
+	}
+
+
+	@Override
+	public void UpdateStatusToAccepted(int vendorRegId) {
+		vendorRepo.UpdateStatusSuccess(vendorRegId);
+	}
+
+
+	@Override
+	public void UpdateStatusToRejected(int vendorRegId) {
+		vendorRepo.UpdateStatusRejected(vendorRegId);
+		
 	}
 
 }
