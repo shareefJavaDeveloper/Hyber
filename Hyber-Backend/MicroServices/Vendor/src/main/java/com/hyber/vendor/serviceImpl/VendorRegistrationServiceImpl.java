@@ -28,7 +28,6 @@ public class VendorRegistrationServiceImpl implements VendorRegistrationService{
 			throw new RuntimeException("Error at addVendor() : VendorRegId Already Exists");
 		}
 		else {
-			System.out.println("++++++++++");
 			vendorRepo.saveAndFlush(vendor);
 		}
 	}
