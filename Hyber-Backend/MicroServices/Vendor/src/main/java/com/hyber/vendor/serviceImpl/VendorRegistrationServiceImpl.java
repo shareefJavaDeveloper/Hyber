@@ -34,10 +34,17 @@ public class VendorRegistrationServiceImpl implements VendorRegistrationService{
 
 
 	@Override
-	public List<VendorReg> getAllVendorsDetails() {
-		List<VendorReg> allVendorsList = vendorRepo.findAll();
-		return allVendorsList;
-	}
+    public List<VendorReg> getAllVendorsDetails() {
+        try {
+        List<VendorReg> allVendorsList = vendorRepo.findAll();
+
+ 
+
+        return allVendorsList;
+        }catch (Exception e) {
+            throw new RuntimeException("Unable to fetch or return vendor list...!");
+        }
+    }
 
 
 	@Override

@@ -2,6 +2,7 @@ package com.hyber.vendor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,13 +36,14 @@ public class VendorController {
 	@Autowired
 	private com.hyber.vendor.repository.StoreProcedureCustomRepository spcr;
 	
+	
 	@GetMapping("/getVendor")
-	public List<VendorReg> getVendorApi(){
+	public ResponseEntity<List<VendorReg>> getVendorApi(){
 		try {
-		List<VendorReg> AllVendorDetails = vendorRegService.getAllVendorsDetails();
-		 return AllVendorDetails;
-			}catch (Exception e) {
-				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage(),e);
+			List<VendorReg> AllVendorDetails = vendorRegService.getAllVendorsDetails();
+			return ResponseEntity.ok(AllVendorDetails);
+		}catch(Exception e) {
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage());	
 		}
 	}
 	
