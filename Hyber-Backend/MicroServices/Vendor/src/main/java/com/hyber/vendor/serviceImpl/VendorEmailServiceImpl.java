@@ -1,5 +1,9 @@
 package com.hyber.vendor.serviceImpl;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -41,15 +45,15 @@ public class VendorEmailServiceImpl implements VendorEmailService{
 
 	@Override
 	public String textOfTheSuccessfulmail(VendorHistReg vendorHistReg) throws Exception {
-		String emailBody = "<html>" +
-							"<h1>" +
-							"Welcome " + vendorHistReg.getFirstName() + " ...!" +
-							"</h1>" +
-							"</br>" +
-							"<h3>" +
-							"Your Registration is Successful...Continue Using Services" +
-							"</h3>" +
-							"</html>";
+		 String emailBody = "<html>" +
+				 "<h1>" +
+				 "Welcome " + vendorHistReg.getFirstName() + " ...!" +
+				 "</h1>" +
+				 "</br>" +
+				 "<h3>" +
+				 "Your Registration is Successful...Continue Using Services" +
+				 "</h3>" +
+				 "</html>";
 		return emailBody;
 	}
 	
@@ -95,4 +99,5 @@ return emailBody;
 		
 	}
 
+	
 }
